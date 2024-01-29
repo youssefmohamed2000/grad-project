@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('job');
             $table->string('phone', '50');
-            $table->enum('social_status', ['married', 'single', 'widow']);
+            $table->enum('social_status', ['married', 'single', 'widow', 'divorced']);
             $table->rememberToken();
             $table->timestamps();
         });
