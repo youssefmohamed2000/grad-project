@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\ResponseTrait;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateUser
 {
+    use ResponseTrait;
     /**
      * Handle an incoming request.
      *
@@ -16,7 +18,9 @@ class AuthenticateUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Auth::setDefaultDriver('user');
+        if (!Auth::guard('user')->check()) {
+            return  $this->sendError('unauthenticated', code: 401);
+        }
 
         return $next($request);
     }

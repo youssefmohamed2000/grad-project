@@ -11,7 +11,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
             'address' => ['required', 'string'],
             'job' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
-            'social_status' => ['required', 'in:married, single, widow, divorced'],
+            'social_status' => ['required', 'in:married,single,widow,divorced'],
         ];
     }
 }

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api\Users;
 
-use App\Http\Requests\Api\Users\RegisterRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Api\Users\LoginRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Api\Users\LoginRequest;
+use App\Http\Requests\Api\Users\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -38,8 +39,8 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $credentials =   $request->safe()->merge([
-            'password' => Hash::make($request->validated['password']),
+        $credentials = $request->safe()->merge([
+            'password' => Hash::make($request->validated('password')),
         ]);
 
         $user = User::query()->create($credentials->toArray());
@@ -57,6 +58,25 @@ class AuthController extends Controller
     {
         $user = Auth::guard('user')->user();
 
+        if (!$user) {
+            return $this->sendError('Failed To Get User');
+        }
+
         return $this->sendResponse(new UserResource($user), 'User Sent');
+    }
+
+    public function logout(): JsonResponse
+    {
+        $user = Auth::guard('user')->user();
+
+        if (!$user) {
+            return $this->sendError('Failed To Get User');
+        }
+
+        // $user->tokens()->delete();
+
+        $user->currentAccessToken()->delete();
+
+        return $this->sendResponse(message:'User Logged out Successfully');
     }
 }

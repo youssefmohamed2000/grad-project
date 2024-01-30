@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'age' => $this->age,
-            'sex' => $this->sex,
+            'sex' => (bool) $this->sex ? 'Female' : 'Male' ,
             'birth_place' => $this->birth_place,
             'address' => $this->address,
             'job' => $this->job,
