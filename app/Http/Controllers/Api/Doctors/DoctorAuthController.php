@@ -64,4 +64,19 @@ class DoctorAuthController extends Controller
         return $this->sendResponse(new DoctorResource($doctor), 'Doctor Sent');
     }
 
+    public function logout(): JsonResponse
+    {
+        $doctor = auth('doctor')->user();
+
+        if (!$doctor) {
+            return $this->sendError('Failed To Get doctor');
+        }
+
+        // $doctor->tokens()->delete();
+
+        $doctor->currentAccessToken()->delete();
+
+        return $this->sendResponse(message:'Doctor Logged out Successfully');
+    }
+
 }
