@@ -55,7 +55,7 @@ class DoctorAuthController extends Controller
 
     public function currentDoctor(): JsonResponse
     {
-        $doctor = Auth::guard('doctor')->user();
+        $doctor = auth('doctor')->user();
 
         if (!$doctor) {
             return $this->sendError('Failed To Get Doctor');
