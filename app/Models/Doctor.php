@@ -16,6 +16,8 @@ class Doctor extends Authenticatable
     protected $fillable = [
         'section_id',
         'name',
+        'email',
+        'password'
     ];
 
     // relations
