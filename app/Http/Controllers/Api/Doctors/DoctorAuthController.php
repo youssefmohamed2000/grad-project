@@ -53,4 +53,15 @@ class DoctorAuthController extends Controller
         return $this->sendResponse($data, 'User Registered Successfully');
     }
 
+    public function currentDoctor(): JsonResponse
+    {
+        $doctor = Auth::guard('doctor')->user();
+
+        if (!$doctor) {
+            return $this->sendError('Failed To Get Doctor');
+        }
+
+        return $this->sendResponse(new DoctorResource($doctor), 'Doctor Sent');
+    }
+
 }
