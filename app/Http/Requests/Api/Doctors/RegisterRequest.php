@@ -4,14 +4,14 @@ namespace App\Http\Requests\Api\Doctors;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DoctorRegisterRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class DoctorRegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:doctors,email',
-            'password' => 'required|confirmed|string|max:255',
+            'password' => 'required|string|max:255',
+            'section_id' => ['required', 'exists:sections,id'],
+            'phone' => 'required|string|max:255',
         ];
     }
 }

@@ -13,7 +13,7 @@ Route::group(['prefix' => 'users'], function () {
 
         Route::middleware('auth.user')->group(function () {
             Route::get('user', 'currentUser');
-            Route::get('logout', 'logout');
+            Route::post('logout', 'logout');
         });
     });
 });

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
             $table->string('name', 191);
+            $table->foreignId('section_id')->nullable()->constrained('sections')->nullOnDelete();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('phone', 100);
             $table->rememberToken();
             $table->timestamps();
         });

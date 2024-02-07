@@ -17,7 +17,8 @@ class Doctor extends Authenticatable
         'section_id',
         'name',
         'email',
-        'password'
+        'password',
+        'phone'
     ];
 
     // relations
@@ -26,7 +27,7 @@ class Doctor extends Authenticatable
         return $this->belongsTo(Section::class, 'section_id', 'id');
     }
 
-    public function diagnose(): HasMany
+    public function diagnoses(): HasMany
     {
         return $this->hasMany(Diagnose::class, 'doctor_id', 'id');
     }

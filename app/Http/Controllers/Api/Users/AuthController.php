@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -22,8 +21,8 @@ class AuthController extends Controller
         $email = $request->validated('email');
         $password = $request->validated('password');
 
-        if (!Auth::attempt(['email' => $email, 'password' => $password])) {
-            return $this->sendError('Auth failed', 'this credentials don\'t match our records');
+        if (!Auth::guard('user')->attempt(['email' => $email, 'password' => $password])) {
+            return $this->sendError('Auth failed', ['this credentials don\'t match our records']);
         }
 
         $user = Auth::guard('user')->user();
@@ -47,7 +46,7 @@ class AuthController extends Controller
         $token = $user->createToken('user-access-token')->plainTextToken;
 
         $data = [
-            'user' => new UserResource($user),
+            'doctor' => new UserResource($user),
             'token' => $token
         ];
 
@@ -73,10 +72,8 @@ class AuthController extends Controller
             return $this->sendError('Failed To Get User');
         }
 
-        // $user->tokens()->delete();
-
         $user->currentAccessToken()->delete();
 
-        return $this->sendResponse(message:'User Logged out Successfully');
+        return $this->sendResponse(message: 'User Logged out Successfully');
     }
 }
