@@ -44,7 +44,7 @@ class AuthController extends Controller
         $token = $doctor->createToken('doctor-access-token')->plainTextToken;
 
         $data = [
-            'user' => new DoctorResource($doctor),
+            'doctor' => new DoctorResource($doctor),
             'token' => $token
         ];
 

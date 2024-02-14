@@ -20,6 +20,7 @@ class UserDetail extends Model
         'booked_before',
         'booked_reason',
         'booked_duration',
+        'blood_type',
     ];
 
     // relations

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('booked_before')->default(0);
             $table->text('booked_reason')->nullable();
             $table->string('booked_duration', 100)->nullable();
+            $table->enum('blood_type', ['a+', 'a-' , 'b+', 'b-', 'o+', 'o-', 'ab+', 'ab-']);
             $table->timestamps();
         });
     }
