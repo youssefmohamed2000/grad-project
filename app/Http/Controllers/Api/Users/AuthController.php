@@ -10,22 +10,17 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Api\Users\LoginRequest;
-use App\Http\Requests\Api\Users\RegisterRequest;
 
 class AuthController extends Controller
 {
-    use ResponseTrait;
-
     public function login(LoginRequest $request): JsonResponse
     {
-        $email = $request->validated('email');
-        $password = $request->validated('password');
+        $user = User::where('email', $request->validated('email'))->first();
 
-        if (!Auth::guard('user')->attempt(['email' => $email, 'password' => $password])) {
-            return $this->sendError('Auth failed', ['this credentials don\'t match our records']);
+        if (!$user || !Hash::check($request->validated('password'), $user->password)) {
+            return $this->sendError('Auth failed', ['These credentials don\'t match our records']);
         }
 
-        $user = Auth::guard('user')->user();
         $token = $user->createToken('user-access-token')->plainTextToken;
 
         $data = [
@@ -34,23 +29,6 @@ class AuthController extends Controller
         ];
 
         return $this->sendResponse($data, 'User Logged in Successfully');
-    }
-
-    public function register(RegisterRequest $request): JsonResponse
-    {
-        $credentials = $request->safe()->merge([
-            'password' => Hash::make($request->validated('password')),
-        ]);
-
-        $user = User::query()->create($credentials->toArray());
-        $token = $user->createToken('user-access-token')->plainTextToken;
-
-        $data = [
-            'doctor' => new UserResource($user),
-            'token' => $token
-        ];
-
-        return $this->sendResponse($data, 'User Registered Successfully');
     }
 
     public function currentUser(): JsonResponse

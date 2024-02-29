@@ -68,5 +68,10 @@ class Kernel extends HttpKernel
         // created middleware
         'auth.user' => \App\Http\Middleware\AuthenticateUser::class,
         'auth.doctor' => \App\Http\Middleware\AuthenticateDoctor::class,
+
+        // package middleware
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 }
