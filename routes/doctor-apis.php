@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Doctor\PermissionController;
 use App\Http\Controllers\Api\Doctors\AuthController;
+use App\Http\Controllers\Api\Doctors\Doctorcontroller;
 use App\Http\Controllers\Api\Doctors\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,8 @@ Route::group(['prefix' => 'doctors'], function () {
 
         // permissions
         Route::get('permissions', [PermissionController::class, 'index']);
+
+        //doctors
+        Route::apiResource('doctors', DoctorController::class);
     });
 });
