@@ -10,11 +10,18 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Api\Users\UserStoreRequest;
 use App\Http\Requests\Api\Users\UserUpdateRequest;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     use Helper;
+
+    public function __construct()
+    {
+        $this->middleware('permission:read_users,doctor')->only('index', 'show');
+        $this->middleware('permission:create_users,doctor')->only('store');
+        $this->middleware('permission:update_users,doctor')->only('update');
+        $this->middleware('permission:delete_users,doctor')->only('delete');
+    }
 
     public function index(): JsonResponse
     {
@@ -27,12 +34,14 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): JsonResponse
     {
-        $data = $this->prepareUserData($request);
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
 
-        return $this->sendResponse(new UserResource($user), 'user created successfully');
+        return $this->sendResponse(new UserResource($user), 'user created successfully', [], 201);
     }
+
 
     public function show(string $id): JsonResponse
     {
@@ -52,7 +61,8 @@ class UserController extends Controller
             return $this->sendError('user not found');
         }
 
-        $data = $this->prepareUserData($request);
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
 
         $user->update($data);
 
@@ -70,12 +80,5 @@ class UserController extends Controller
         $user->delete();
 
         return $this->sendResponse(new UserResource($user), 'user deleted successfully');
-    }
-
-    private function prepareUserData(Request $request): array
-    {
-        return $request->safe()->merge([
-            'password' => Hash::make($request->validated('password')),
-        ])->toArray();
     }
 }

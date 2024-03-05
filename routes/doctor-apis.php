@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\Doctor\PermissionController;
-use App\Http\Controllers\Api\Doctors\AuthController;
-use App\Http\Controllers\Api\Doctors\Doctorcontroller;
-use App\Http\Controllers\Api\Doctors\RoleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Doctors\AuthController;
+use App\Http\Controllers\Api\Doctors\RoleController;
+use App\Http\Controllers\Api\Doctors\DoctorController;
+use App\Http\Controllers\Api\Doctors\PermissionController;
 
 // User Routes
 Route::group(['prefix' => 'doctors'], function () {

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Models\User;
-use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -28,7 +27,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return $this->sendResponse($data, 'User Logged in Successfully');
+        return $this->sendResponse($data, 'user logged in successfully');
     }
 
     public function currentUser(): JsonResponse
@@ -36,10 +35,10 @@ class AuthController extends Controller
         $user = Auth::guard('user')->user();
 
         if (!$user) {
-            return $this->sendError('Failed To Get User');
+            return $this->sendError('user not found');
         }
 
-        return $this->sendResponse(new UserResource($user), 'User Sent');
+        return $this->sendResponse(new UserResource($user), 'user sent');
     }
 
     public function logout(): JsonResponse
@@ -47,11 +46,11 @@ class AuthController extends Controller
         $user = Auth::guard('user')->user();
 
         if (!$user) {
-            return $this->sendError('Failed To Get User');
+            return $this->sendError('user not found');
         }
 
         $user->currentAccessToken()->delete();
 
-        return $this->sendResponse(message: 'User Logged out Successfully');
+        return $this->sendResponse(message: 'user logged out successfully');
     }
 }

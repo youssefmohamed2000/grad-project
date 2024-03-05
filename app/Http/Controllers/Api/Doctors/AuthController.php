@@ -16,7 +16,7 @@ class AuthController extends Controller
         $doctor = Doctor::where('email', $request->validated('email'))->first();
 
         if (!$doctor || !Hash::check($request->validated('password'), $doctor->password)) {
-            return $this->sendError('Auth failed', ['These credentials don\'t match our records']);
+            return $this->sendError('Auth failed', ['these credentials don\'t match our records']);
         }
 
         $token = $doctor->createToken('doctor-access-token')->plainTextToken;
@@ -26,7 +26,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return $this->sendResponse($data, 'Doctor Logged in Successfully');
+        return $this->sendResponse($data, 'doctor logged in successfully');
     }
 
     public function currentDoctor(): JsonResponse
@@ -34,10 +34,10 @@ class AuthController extends Controller
         $doctor = auth('doctor')->user();
 
         if (!$doctor) {
-            return $this->sendError('Failed To Get Doctor');
+            return $this->sendError('doctor not found');
         }
 
-        return $this->sendResponse(new DoctorResource($doctor), 'Doctor Sent');
+        return $this->sendResponse(new DoctorResource($doctor), 'doctor sent');
     }
 
     public function logout(): JsonResponse
@@ -45,11 +45,11 @@ class AuthController extends Controller
         $doctor = auth('doctor')->user();
 
         if (!$doctor) {
-            return $this->sendError('Failed To Get Doctor');
+            return $this->sendError('doctor not found');
         }
 
         $doctor->currentAccessToken()->delete();
 
-        return $this->sendResponse(message: 'Doctor Logged out Successfully');
+        return $this->sendResponse(message: 'doctor logged out successfully');
     }
 }
