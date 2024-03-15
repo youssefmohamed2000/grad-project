@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('drugs')->nullable(); // save like this "drug1,drug2,drug3"
-            $table->boolean('blood_transfusion')->default(0);
+            $table->boolean('blood_transfusion')->default(0); // [0 => no, 1 => yes]
             $table->text('allergy')->nullable();
             $table->integer('children_no')->default(0);
             $table->integer('last_child_age')->nullable();
-            $table->boolean('booked_before')->default(0);
+            $table->boolean('booked_before')->default(0); // [0 => no, 1 => yes]
             $table->text('booked_reason')->nullable();
             $table->string('booked_duration', 100)->nullable();
             $table->enum('blood_type', ['a+', 'a-' , 'b+', 'b-', 'o+', 'o-', 'ab+', 'ab-']);

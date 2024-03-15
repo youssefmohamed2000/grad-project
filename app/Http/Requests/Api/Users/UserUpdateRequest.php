@@ -23,7 +23,7 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . request()->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . request()->user,
             'password' => 'required|confirmed|string|max:255',
             'age' => ['required', 'integer'],
             'sex' => ['required', 'between:0,1'],

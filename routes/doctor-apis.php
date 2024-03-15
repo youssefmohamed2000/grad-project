@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Doctors\AuthController;
 use App\Http\Controllers\Api\Doctors\RoleController;
 use App\Http\Controllers\Api\Doctors\DoctorController;
+use App\Http\Controllers\Api\Doctors\SectionController;
+use App\Http\Controllers\Api\Doctors\DiseasesController;
 use App\Http\Controllers\Api\Doctors\PermissionController;
 
 // User Routes
@@ -28,5 +30,11 @@ Route::group(['prefix' => 'doctors'], function () {
 
         //doctors
         Route::apiResource('doctors', DoctorController::class);
+
+        // sections
+        Route::resource('sections', SectionController::class)->except('show');
+
+        // chronic diseases
+        Route::resource('diseases', DiseasesController::class)->except('show');
     });
 });

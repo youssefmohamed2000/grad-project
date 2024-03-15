@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'job' => $this->job,
             'phone' => $this->phone,
             'social_status' => $this->social_status,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at->toDateString()
         ];
     }
 }

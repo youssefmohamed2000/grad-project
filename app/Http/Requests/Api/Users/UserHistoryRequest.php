@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Doctors;
+namespace App\Http\Requests\Api\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DoctorUpdateRequest extends FormRequest
+class UserHistoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,10 @@ class DoctorUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|required|string|max:191',
-            'section_id' => 'required|required|exists:sections,id',
-            'email' => 'required|required|string|email|max:255|unique:doctors,email',
-            'password' => 'required|required|confirmed|string|max:255',
-            'phone' => 'required|required|string|max:100',
+            'user_id' => ['required', 'exists:users,id'],
+            'parents_relative' => ['required', 'in:0,1'],
+            'parents_same_complain' => ['required', 'in:0,1'],
+            'genetic_diseases' => ['required', 'string'],
         ];
     }
 }
