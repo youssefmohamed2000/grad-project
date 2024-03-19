@@ -22,6 +22,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create_sections', 'read_sections', 'update_sections', 'delete_sections',
             'create_diseases', 'read_diseases', 'update_diseases', 'delete_diseases',
             'create_diagnoses', 'read_diagnoses', 'update_diagnoses', 'delete_diagnoses',
+            'read_complains', 'create_complains', 'update_complains', 'delete_complains',
         ];
 
         $permissions = collect($permissions)->map(function ($permission) {
