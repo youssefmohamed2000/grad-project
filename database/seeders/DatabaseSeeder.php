@@ -4,7 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Complain;
+use App\Models\Diagnose;
+use App\Models\Operation;
 use App\Models\Section;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +24,10 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             DoctorSeeder::class
         ]);
+
+        User::factory(5)->create();
+        Complain::factory(10)->create();
+        Diagnose::factory(10)->create();
+        Operation::factory(10)->create();
     }
 }
