@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Doctors\ComplainsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Doctors\AuthController;
 use App\Http\Controllers\Api\Doctors\RoleController;
@@ -36,5 +37,6 @@ Route::group(['prefix' => 'doctors'], function () {
 
         // chronic diseases
         Route::resource('diseases', DiseasesController::class)->except('show');
+        Route::apiResource('complains', ComplainsController::class);
     });
 });
