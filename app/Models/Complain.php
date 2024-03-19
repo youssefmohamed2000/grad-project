@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-
+/**
+ * @mixin Builder
+ */
 class Complain extends Model
 {
     use HasFactory;
@@ -19,7 +22,7 @@ class Complain extends Model
         'decrease_with',
     ];
 
-    // relations 
+    // relations
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
