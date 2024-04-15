@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\ChronicDiseases;
 use App\Models\Complain;
 use App\Models\Diagnose;
 use App\Models\Operation;
@@ -29,5 +30,6 @@ class DatabaseSeeder extends Seeder
         Complain::factory(10)->create();
         Diagnose::factory(10)->create();
         Operation::factory(10)->create();
+        ChronicDiseases::factory(10)->create();
     }
 }
