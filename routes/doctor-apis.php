@@ -35,10 +35,10 @@ Route::group(['prefix' => 'doctors'], function () {
         Route::apiResource('doctors', DoctorController::class);
 
         // sections
-        Route::resource('sections', SectionController::class)->except('show');
+        Route::apiResource('sections', SectionController::class)->except('show');
 
         // chronic diseases
-        Route::resource('diseases', DiseasesController::class)->except('show');
+        Route::apiResource('diseases', DiseasesController::class)->except('show');
         Route::apiResource('complains', ComplainsController::class);
         Route::apiResource('diagnoses', DiagnosesController::class);
         Route::apiResource('operations', OperationsController::class);
