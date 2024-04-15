@@ -47,7 +47,9 @@ class DiagnosesController extends Controller
 
         return $this->sendResponse(
             new DiagnoseResource($diagnose),
-            'diagnose created successfully'
+            'diagnose created successfully',
+            [],
+            201
         );
     }
 

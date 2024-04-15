@@ -43,6 +43,8 @@ class SectionController extends Controller
         return $this->sendResponse(
             new SectionResource($section),
             'section created successfully',
+            [],
+            201
         );
     }
 

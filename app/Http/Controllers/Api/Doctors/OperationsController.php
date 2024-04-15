@@ -47,7 +47,9 @@ class OperationsController extends Controller
 
         return $this->sendResponse(
             new OperationResource($operation),
-            'operation created successfully'
+            'operation created successfully',
+            [],
+            201
         );
     }
 

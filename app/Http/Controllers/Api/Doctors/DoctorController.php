@@ -39,7 +39,7 @@ class DoctorController extends Controller
 
         $doctor = Doctor::create($data);
 
-        return $this->sendResponse(new DoctorResource($doctor), 'doctor created successfully');
+        return $this->sendResponse(new DoctorResource($doctor), 'doctor created successfully', [] , 201);
     }
 
     public function show(string $id): JsonResponse

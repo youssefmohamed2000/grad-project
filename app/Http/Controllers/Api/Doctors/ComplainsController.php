@@ -46,7 +46,9 @@ class ComplainsController extends Controller
 
         return $this->sendResponse(
             new ComplainResource($complain),
-            'complain created successfully'
+            'complain created successfully',
+            [],
+            201
         );
     }
 

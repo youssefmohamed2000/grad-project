@@ -42,6 +42,8 @@ class DiseasesController extends Controller
         return $this->sendResponse(
             new ChronicDiseasesResource($disease),
             'disease created successfully',
+            [],
+            201
         );
     }
 
