@@ -22,11 +22,11 @@ class OperationStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|numeric|exists:users,id',
+            'user_id' => 'required|exists:users,id',
             'type' => 'required|string',
-            'date' => 'required|date',
-            'effect' => 'required|string',
-            'doctor_name' => 'required|string',
+            'date' => 'nullable|date',
+            'effect' => 'nullable|string',
+            'doctor_name' => 'nullable|string',
         ];
     }
 }

@@ -22,11 +22,11 @@ class OperationUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'sometimes|required|numeric|exists:users,id',
-            'type' => 'sometimes|required|string',
-            'date' => 'sometimes|required|date',
-            'effect' => 'sometimes|required|string',
-            'doctor_name' => 'sometimes|required|string',
+            'user_id' => 'required|numeric|exists:users,id',
+            'type' => 'required|string',
+            'date' => 'nullable|date',
+            'effect' => 'nullable|string',
+            'doctor_name' => 'nullable|string',
         ];
     }
 }

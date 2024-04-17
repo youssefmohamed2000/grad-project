@@ -22,11 +22,11 @@ class ComplainUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'sometimes|required|exists:users,id',
-            'complain' => 'sometimes|required',
-            'start_date' => 'sometimes|required',
-            'increase_with' => 'sometimes|required',
-            'decrease_with' => 'sometimes|required',
+            'user_id' => 'required|exists:users,id',
+            'complain' => 'required',
+            'start_date' => 'nullable',
+            'increase_with' => 'nullable',
+            'decrease_with' => 'nullable',
         ];
     }
 }

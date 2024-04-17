@@ -58,6 +58,7 @@ class ComplainsController extends Controller
     public function show(string $id) : JsonResponse
     {
         $complain = Complain::find($id);
+       
         if (!$complain){
             return $this->sendError('complain not found');
         }
@@ -71,6 +72,7 @@ class ComplainsController extends Controller
     public function update(ComplainUpdateRequest $request, string $id) : JsonResponse
     {
         $complain = Complain::find($id);
+        
         if (!$complain){
             return $this->sendError('complain not found');
         }
@@ -86,11 +88,13 @@ class ComplainsController extends Controller
     public function destroy(string $id) : JsonResponse
     {
         $complain = Complain::find($id);
+        
         if (!$complain){
             return $this->sendError('complain not found');
         }
 
         $complain->delete();
+        
         return $this->sendResponse(new ComplainResource($complain), 'complain deleted successfully');
     }
 }

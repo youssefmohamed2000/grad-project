@@ -24,7 +24,7 @@ class DoctorUpdateRequest extends FormRequest
         return [
             'name' => 'required|required|string|max:191',
             'section_id' => 'required|required|exists:sections,id',
-            'email' => 'required|required|string|email|max:255|unique:doctors,email',
+            'email' => 'required|required|string|email|max:255|unique:doctors,email,' . $this->doctor,
             'password' => 'required|required|confirmed|string|max:255',
             'phone' => 'required|required|string|max:100',
         ];

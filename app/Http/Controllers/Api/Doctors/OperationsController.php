@@ -59,6 +59,7 @@ class OperationsController extends Controller
     public function show(string $id) : JsonResponse
     {
         $operation = Operation::find($id);
+        
         if (!$operation){
             return $this->sendError('operation not found');
         }
@@ -72,6 +73,7 @@ class OperationsController extends Controller
     public function update(OperationUpdateRequest $request, string $id) : JsonResponse
     {
         $operation = Operation::find($id);
+        
         if (!$operation){
             return $this->sendError('operation not found');
         }
@@ -87,6 +89,7 @@ class OperationsController extends Controller
     public function destroy(string $id) : JsonResponse
     {
         $operation = Operation::find($id);
+       
         if (!$operation){
             return $this->sendError('operation not found');
         }

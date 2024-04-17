@@ -59,6 +59,7 @@ class DiagnosesController extends Controller
     public function show(string $id) : JsonResponse
     {
         $diagnose = Diagnose::find($id);
+        
         if (!$diagnose){
             return $this->sendError('diagnose not found');
         }
@@ -72,6 +73,7 @@ class DiagnosesController extends Controller
     public function update(DiagnoseUpdateRequest $request, string $id) : JsonResponse
     {
         $diagnose = Diagnose::find($id);
+        
         if (!$diagnose){
             return $this->sendError('diagnose not found');
         }
@@ -87,6 +89,7 @@ class DiagnosesController extends Controller
     public function destroy(string $id) : JsonResponse
     {
         $diagnose = Diagnose::find($id);
+        
         if (!$diagnose){
             return $this->sendError('diagnose not found');
         }

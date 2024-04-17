@@ -22,9 +22,9 @@ class DiagnoseUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'complain_id' => 'sometimes|required|exists:complains,id',
-            'doctor_id' => 'sometimes|required|exists:doctors,id',
-            'diagnose' => 'sometimes|required',
+            'complain_id' => 'required|exists:complains,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'diagnose' => 'required',
         ];
     }
 }

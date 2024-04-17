@@ -24,9 +24,9 @@ class ComplainStoreRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'complain' => 'required',
-            'start_date' => 'required',
-            'increase_with' => 'required',
-            'decrease_with' => 'required',
+            'start_date' => 'nullable',
+            'increase_with' => 'nullable',
+            'decrease_with' => 'nullable',
         ];
     }
 }

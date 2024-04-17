@@ -39,8 +39,14 @@ Route::group(['prefix' => 'doctors'], function () {
 
         // chronic diseases
         Route::apiResource('diseases', DiseasesController::class)->except('show');
+        
+        // complains
         Route::apiResource('complains', ComplainsController::class);
+        
+        // diagnoses
         Route::apiResource('diagnoses', DiagnosesController::class);
+        
+        // operations
         Route::apiResource('operations', OperationsController::class);
     });
 });
