@@ -36,6 +36,16 @@ class SectionController extends Controller
         );
     }
 
+    public function show(string $id): JsonResponse
+    {
+        $section  = Section::find($id);
+
+        return $this->sendResponse(
+            new SectionResource($section),
+            'section fetched successfully'
+        );
+    }
+
     public function store(SectionStoreRequest $request): JsonResponse
     {
         $section = Section::create($request->validated());
@@ -78,5 +88,15 @@ class SectionController extends Controller
             new SectionResource($section),
             'section deleted successfully',
         );
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $sections = Section::find($request->input('ids'));
+        $status = Section::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('sections not found');
+
+        return $this->sendResponse(SectionResource::collection($sections), 'sections deleted successfully');
     }
 }

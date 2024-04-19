@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api\Doctors;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DoctorUpdateRequest extends FormRequest
@@ -22,11 +24,19 @@ class DoctorUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|required|string|max:191',
-            'section_id' => 'required|required|exists:sections,id',
-            'email' => 'required|required|string|email|max:255|unique:doctors,email,' . $this->doctor,
-            'password' => 'required|required|confirmed|string|max:255',
-            'phone' => 'required|required|string|max:100',
+            'name' => 'required|string|max:191',
+            'section_id' => 'required|exists:sections,id',
+            'email' => 'required|string|email|max:255|unique:doctors,email,' . $this->doctor,
+            'password' => 'confirmed|string|max:255',
+            'phone' => 'required|string|max:100',
         ];
+    }
+
+    protected function passedValidation()
+    {
+        $this->replace([
+            ...$this->validated(),
+            'password' => Hash::make($this->input('password'))
+        ]);
     }
 }

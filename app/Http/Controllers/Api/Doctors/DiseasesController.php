@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Doctors;
 
 use App\Traits\Helper;
 use App\Models\ChronicDiseases;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChronicDiseasesResource;
@@ -32,6 +33,16 @@ class DiseasesController extends Controller
             ChronicDiseasesResource::collection($diseases),
             'diseases sent successfully',
             $paginationData
+        );
+    }
+
+    public function show(string $id): JsonResponse
+    {
+        $section  = ChronicDiseases::find($id);
+
+        return $this->sendResponse(
+            new ChronicDiseasesResource($section),
+            'diseases fetched successfully'
         );
     }
 
@@ -77,5 +88,15 @@ class DiseasesController extends Controller
             new ChronicDiseasesResource($disease),
             'disease deleted successfully',
         );
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $diseases = ChronicDiseases::find($request->input('ids'));
+        $status = ChronicDiseases::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('diseases not found');
+
+        return $this->sendResponse(ChronicDiseasesResource::collection($diseases), 'diseases deleted successfully');
     }
 }

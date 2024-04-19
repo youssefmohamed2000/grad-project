@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Doctors\DiagnoseStoreRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\Api\Doctors\DiagnoseUpdateRequest;
 use App\Http\Resources\DiagnoseResource;
 use App\Models\Diagnose;
@@ -25,7 +26,7 @@ class DiagnosesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $diagnoses = Diagnose::paginate();
 
@@ -41,7 +42,7 @@ class DiagnosesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DiagnoseStoreRequest $request) : JsonResponse
+    public function store(DiagnoseStoreRequest $request): JsonResponse
     {
         $diagnose = Diagnose::create($request->validated());
 
@@ -56,11 +57,11 @@ class DiagnosesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) : JsonResponse
+    public function show(string $id): JsonResponse
     {
         $diagnose = Diagnose::find($id);
-        
-        if (!$diagnose){
+
+        if (!$diagnose) {
             return $this->sendError('diagnose not found');
         }
 
@@ -70,11 +71,11 @@ class DiagnosesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DiagnoseUpdateRequest $request, string $id) : JsonResponse
+    public function update(DiagnoseUpdateRequest $request, string $id): JsonResponse
     {
         $diagnose = Diagnose::find($id);
-        
-        if (!$diagnose){
+
+        if (!$diagnose) {
             return $this->sendError('diagnose not found');
         }
 
@@ -86,15 +87,25 @@ class DiagnosesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) : JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         $diagnose = Diagnose::find($id);
-        
-        if (!$diagnose){
+
+        if (!$diagnose) {
             return $this->sendError('diagnose not found');
         }
 
         $diagnose->delete();
         return $this->sendResponse(new DiagnoseResource($diagnose), 'diagnose deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $diagnoses = Diagnose::find($request->input('ids'));
+        $status = Diagnose::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('diagnoses not found');
+
+        return $this->sendResponse(DiagnoseResource::collection($diagnoses), 'diagnoses deleted successfully');
     }
 }

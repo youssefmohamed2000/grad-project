@@ -13,7 +13,6 @@ use App\Http\Controllers\Api\Doctors\PermissionController;
 
 // User Routes
 Route::group(['prefix' => 'doctors'], function () {
-
     // Auth Routes
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
@@ -23,30 +22,37 @@ Route::group(['prefix' => 'doctors'], function () {
             Route::post('logout', 'logout');
         });
     });
+});
 
-    Route::middleware('auth.doctor')->group(function () {
-        // roles
-        Route::apiResource('roles', RoleController::class)->except('show');
+Route::middleware('auth.doctor')->group(function () {
+    // roles
+    Route::apiResource('roles', RoleController::class);
+    Route::delete('roles', [RoleController::class, 'deleteMany']);
 
-        // permissions
-        Route::get('permissions', [PermissionController::class, 'index']);
+    // permissions
+    Route::get('permissions', [PermissionController::class, 'index']);
 
-        //doctors
-        Route::apiResource('doctors', DoctorController::class);
+    //doctors
+    Route::apiResource('doctors', DoctorController::class);
+    Route::delete('doctors', [DoctorController::class, 'deleteMany']);
 
-        // sections
-        Route::apiResource('sections', SectionController::class)->except('show');
+    // sections
+    Route::apiResource('sections', SectionController::class);
+    Route::delete('sections', [SectionController::class, 'deleteMany']);
 
-        // chronic diseases
-        Route::apiResource('diseases', DiseasesController::class)->except('show');
-        
-        // complains
-        Route::apiResource('complains', ComplainsController::class);
-        
-        // diagnoses
-        Route::apiResource('diagnoses', DiagnosesController::class);
-        
-        // operations
-        Route::apiResource('operations', OperationsController::class);
-    });
+    // chronic diseases
+    Route::apiResource('diseases', DiseasesController::class);
+    Route::delete('diseases', [DiseasesController::class, 'deleteMany']);
+
+    // complains
+    Route::apiResource('complains', ComplainsController::class);
+    Route::delete('complains', [ComplainsController::class, 'deleteMany']);
+
+    // diagnoses
+    Route::apiResource('diagnoses', DiagnosesController::class);
+    Route::delete('diagnoses', [DiagnosesController::class, 'deleteMany']);
+
+    // operations
+    Route::apiResource('operations', OperationsController::class);
+    Route::delete('operations', [OperationsController::class, 'deleteMany']);
 });

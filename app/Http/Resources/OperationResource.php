@@ -16,7 +16,7 @@ class OperationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new UserResource($this->user),
+            'user_id' => $this->user->id,
             'type' => $this->type,
             'date' => $this->date,
             'effect' => $this->effect,

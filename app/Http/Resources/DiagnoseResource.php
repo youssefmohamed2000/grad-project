@@ -16,8 +16,8 @@ class DiagnoseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'complain' => new ComplainResource($this->complain),
-            'doctor' => new DoctorResource($this->doctor),
+            'complain_id' => $this->complain->id,
+            'doctor_id' => $this->doctor->id,
             'diagnose' => $this->diagnose,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

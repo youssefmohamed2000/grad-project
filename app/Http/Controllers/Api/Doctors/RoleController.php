@@ -36,6 +36,13 @@ class RoleController extends Controller
         );
     }
 
+    public function show(string $id): JsonResponse
+    {
+        $role = Role::find($id);
+
+        return $this->sendResponse(new RoleResource($role), 'role fetched successfully');
+    }
+
     public function store(RoleStoreRequest $request): JsonResponse
     {
         $role = Role::create([
@@ -76,5 +83,15 @@ class RoleController extends Controller
         $role->delete();
 
         return $this->sendResponse(new RoleResource($role), 'role deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $roles = Role::find($request->input('ids'));
+        $status = Role::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('roles not found');
+
+        return $this->sendResponse(RoleResource::collection($roles), 'roles deleted successfully');
     }
 }

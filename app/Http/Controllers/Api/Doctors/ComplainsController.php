@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Doctors\ComplainStoreRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\Api\Doctors\ComplainUpdateRequest;
 use App\Http\Resources\ComplainResource;
 use App\Models\Complain;
@@ -55,13 +56,12 @@ class ComplainsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) : JsonResponse
+    public function show(string $id): JsonResponse
     {
         $complain = Complain::find($id);
-       
-        if (!$complain){
+
+        if (!$complain)
             return $this->sendError('complain not found');
-        }
 
         return $this->sendResponse(new ComplainResource($complain), 'complain sent successfully');
     }
@@ -69,11 +69,11 @@ class ComplainsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ComplainUpdateRequest $request, string $id) : JsonResponse
+    public function update(ComplainUpdateRequest $request, string $id): JsonResponse
     {
         $complain = Complain::find($id);
-        
-        if (!$complain){
+
+        if (!$complain) {
             return $this->sendError('complain not found');
         }
 
@@ -85,16 +85,26 @@ class ComplainsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) : JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         $complain = Complain::find($id);
-        
-        if (!$complain){
+
+        if (!$complain) {
             return $this->sendError('complain not found');
         }
 
         $complain->delete();
-        
+
         return $this->sendResponse(new ComplainResource($complain), 'complain deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $complains = Complain::find($request->input('ids'));
+        $status = Complain::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('complains not found');
+
+        return $this->sendResponse(ComplainResource::collection($complains), 'complains deleted successfully');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Models\User;
 use App\Traits\Helper;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -80,5 +81,14 @@ class UserController extends Controller
         $user->delete();
 
         return $this->sendResponse(new UserResource($user), 'user deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $users = User::find($request->input('ids'));
+        $status = User::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('users not found');
+        return $this->sendResponse(UserResource::collection($users), 'users deleted successfully');
     }
 }

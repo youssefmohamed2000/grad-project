@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Doctors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Doctors\OperationStoreRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\Api\Doctors\OperationUpdateRequest;
 use App\Http\Resources\OperationResource;
 use App\Models\Operation;
@@ -25,7 +26,7 @@ class OperationsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index(): JsonResponse
     {
         $operations = Operation::paginate();
 
@@ -41,7 +42,7 @@ class OperationsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(OperationStoreRequest $request) : JsonResponse
+    public function store(OperationStoreRequest $request): JsonResponse
     {
         $operation = Operation::create($request->validated());
 
@@ -56,11 +57,11 @@ class OperationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) : JsonResponse
+    public function show(string $id): JsonResponse
     {
         $operation = Operation::find($id);
-        
-        if (!$operation){
+
+        if (!$operation) {
             return $this->sendError('operation not found');
         }
 
@@ -70,11 +71,11 @@ class OperationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OperationUpdateRequest $request, string $id) : JsonResponse
+    public function update(OperationUpdateRequest $request, string $id): JsonResponse
     {
         $operation = Operation::find($id);
-        
-        if (!$operation){
+
+        if (!$operation) {
             return $this->sendError('operation not found');
         }
 
@@ -86,15 +87,25 @@ class OperationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) : JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         $operation = Operation::find($id);
-       
-        if (!$operation){
+
+        if (!$operation) {
             return $this->sendError('operation not found');
         }
 
         $operation->delete();
         return $this->sendResponse(new OperationResource($operation), 'operation deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $operations = Operation::find($request->input('ids'));
+        $status = Operation::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('operations not found');
+
+        return $this->sendResponse(OperationResource::collection($operations), 'operations deleted successfully');
     }
 }

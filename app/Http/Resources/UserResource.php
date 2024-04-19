@@ -19,13 +19,13 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'age' => $this->age,
-            'sex' => (bool) $this->sex ? 'Female' : 'Male' ,
+            'sex' => $this->sex,
             'birth_place' => $this->birth_place,
             'address' => $this->address,
             'job' => $this->job,
             'phone' => $this->phone,
             'social_status' => $this->social_status,
-            'created_at' => $this->created_at->toDateString()
+            'created_at' => $this->created_at?->toDateString()
         ];
     }
 }

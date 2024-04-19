@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Doctors\DoctorStoreRequest;
 use App\Http\Requests\Api\Doctors\DoctorUpdateRequest;
 use App\Http\Resources\DoctorResource;
+use Illuminate\Http\Request;
 use App\Models\Doctor;
 use App\Traits\Helper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class DoctorController extends Controller
 {
@@ -39,7 +41,7 @@ class DoctorController extends Controller
 
         $doctor = Doctor::create($data);
 
-        return $this->sendResponse(new DoctorResource($doctor), 'doctor created successfully', [] , 201);
+        return $this->sendResponse(new DoctorResource($doctor), 'doctor created successfully', [], 201);
     }
 
     public function show(string $id): JsonResponse
@@ -56,14 +58,10 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::find($id);
 
-        if (!$doctor) {
+        if (!$doctor)
             return $this->sendError('doctor not found');
-        }
 
-        $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
-
-        $doctor->update($data);
+        $doctor->update($request->all());
 
         return $this->sendResponse(new DoctorResource($doctor), 'doctor updated successfully');
     }
@@ -78,5 +76,15 @@ class DoctorController extends Controller
 
         $doctor->delete();
         return $this->sendResponse(new DoctorResource($doctor), 'doctor deleted successfully');
+    }
+
+    public function deleteMany(Request $request): JsonResponse
+    {
+        $doctors = Doctor::find($request->input('ids'));
+        $status = Doctor::destroy($request->input('ids'));
+        if (!$status)
+            return $this->sendError('doctors not found');
+
+        return $this->sendResponse(DoctorResource::collection($doctors), 'doctors deleted successfully');
     }
 }
