@@ -29,6 +29,7 @@ class DoctorUpdateRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:doctors,email,' . $this->doctor,
             'password' => 'confirmed|string|max:255',
             'phone' => 'required|string|max:100',
+            'image' => 'nullable|image'
         ];
     }
 

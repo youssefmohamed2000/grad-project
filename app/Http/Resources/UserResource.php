@@ -25,6 +25,9 @@ class UserResource extends JsonResource
             'job' => $this->job,
             'phone' => $this->phone,
             'social_status' => $this->social_status,
+            'details_id' => $this->details->id ?? null,
+            'complains' => $this->complains,
+            'operations' => $this->operations,
             'created_at' => $this->created_at?->toDateString()
         ];
     }

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api\Doctors;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Doctors\DoctorStoreRequest;
-use App\Http\Requests\Api\Doctors\DoctorUpdateRequest;
-use App\Http\Resources\DoctorResource;
-use Illuminate\Http\Request;
 use App\Models\Doctor;
 use App\Traits\Helper;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\DoctorResource;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Api\Doctors\DoctorStoreRequest;
+use App\Http\Requests\Api\Doctors\DoctorUpdateRequest;
 
 class DoctorController extends Controller
 {
@@ -39,6 +40,12 @@ class DoctorController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
 
+        if ($request->hasFile('image')) {
+            $request->file('image')->store('public/doctors');
+
+            $data['image'] = $request->file('image')->hashName();
+        }
+
         $doctor = Doctor::create($data);
 
         return $this->sendResponse(new DoctorResource($doctor), 'doctor created successfully', [], 201);
@@ -56,12 +63,30 @@ class DoctorController extends Controller
 
     public function update(DoctorUpdateRequest $request, string $id): JsonResponse
     {
+        $data = $request->all();
+
         $doctor = Doctor::find($id);
 
-        if (!$doctor)
+        if (!$doctor) {
             return $this->sendError('doctor not found');
+        }
 
-        $doctor->update($request->all());
+        if ($request->hasFile('image')) {
+            if ($doctor->image) {
+                Storage::delete('public/doctors/' . $doctor->image);
+            }
+
+            $request->file('image')->store('public/doctors');
+
+            $data  = array_merge(
+                $data,
+                [
+                    'image' => $request->file('image')->hashName()
+                ]
+            );
+        }
+
+        $doctor->update($data);
 
         return $this->sendResponse(new DoctorResource($doctor), 'doctor updated successfully');
     }
@@ -75,6 +100,11 @@ class DoctorController extends Controller
         }
 
         $doctor->delete();
+
+        if ($doctor->image) {
+            Storage::delete('public/doctors/' . $doctor->image);
+        }
+
         return $this->sendResponse(new DoctorResource($doctor), 'doctor deleted successfully');
     }
 

@@ -27,6 +27,7 @@ class DoctorStoreRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:doctors,email',
             'password' => 'required|confirmed|string|max:255',
             'phone' => 'required|string|max:100',
+            'image' => 'nullable|image',
         ];
     }
 }

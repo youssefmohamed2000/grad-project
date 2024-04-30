@@ -25,11 +25,13 @@ Route::middleware('auth.doctor')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::delete('users', [UserController::class, 'deleteMany']);
 
-    // user details
-    Route::get('details/{user_id}', [UserDetailsController::class, 'show']);
-    Route::post('details', [UserDetailsController::class, 'storeOrUpdate']);
+    Route::group(['prefix' => 'users'], function () {
+        // user details
+        Route::get('details/{user_id}', [UserDetailsController::class, 'show']);
+        Route::post('details', [UserDetailsController::class, 'storeOrUpdate']);
 
-    // user family history
-    Route::get('history/{user_id}', [UserHistoryController::class, 'show']);
-    Route::post('history', [UserHistoryController::class, 'storeOrUpdate']);
+        // user family history
+        Route::get('history/{user_id}', [UserHistoryController::class, 'show']);
+        Route::post('history', [UserHistoryController::class, 'storeOrUpdate']);
+    });
 });

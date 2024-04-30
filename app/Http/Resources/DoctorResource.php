@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class DoctorResource extends JsonResource
 {
@@ -20,6 +21,8 @@ class DoctorResource extends JsonResource
             'email' => $this->email,
             'section_id' => $this->section->id,
             'phone' => $this->phone,
+            'image' => url('storage/doctors/' . $this->image),
+            'diagnoses' => $this->diagnoses,
             'created_at' => $this->created_at
         ];
     }
