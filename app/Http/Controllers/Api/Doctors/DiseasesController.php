@@ -20,7 +20,8 @@ class DiseasesController extends Controller
         $this->middleware('permission:read_diseases,doctor')->only('index');
         $this->middleware('permission:create_diseases,doctor')->only('store');
         $this->middleware('permission:update_diseases,doctor')->only('update');
-        $this->middleware('permission:delete_diseases,doctor')->only('delete');
+        $this->middleware('permission:delete_diseases,doctor')->only('destroy');
+        $this->middleware('permission:delete_diseases,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse

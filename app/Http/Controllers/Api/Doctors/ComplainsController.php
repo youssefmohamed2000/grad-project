@@ -20,7 +20,8 @@ class ComplainsController extends Controller
         $this->middleware('permission:read_complains,doctor')->only('index', 'show');
         $this->middleware('permission:create_complains,doctor')->only('store');
         $this->middleware('permission:update_complains,doctor')->only('update');
-        $this->middleware('permission:delete_complains,doctor')->only('delete');
+        $this->middleware('permission:delete_complains,doctor')->only('destroy');
+        $this->middleware('permission:delete_complains,doctor')->only('deleteMany');
     }
 
     /**

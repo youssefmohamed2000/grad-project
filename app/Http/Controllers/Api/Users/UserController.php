@@ -21,7 +21,8 @@ class UserController extends Controller
         $this->middleware('permission:read_users,doctor')->only('index', 'show');
         $this->middleware('permission:create_users,doctor')->only('store');
         $this->middleware('permission:update_users,doctor')->only('update');
-        $this->middleware('permission:delete_users,doctor')->only('delete');
+        $this->middleware('permission:delete_users,doctor')->only('destroy');
+        $this->middleware('permission:delete_users,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse

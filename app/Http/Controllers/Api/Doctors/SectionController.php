@@ -20,7 +20,8 @@ class SectionController extends Controller
         $this->middleware('permission:read_sections,doctor')->only('index');
         $this->middleware('permission:create_sections,doctor')->only('store');
         $this->middleware('permission:update_sections,doctor')->only('update');
-        $this->middleware('permission:delete_sections,doctor')->only('delete');
+        $this->middleware('permission:delete_sections,doctor')->only('destroy');
+        $this->middleware('permission:delete_sections,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Doctors\RoleController;
 use App\Http\Controllers\Api\Doctors\DoctorController;
 use App\Http\Controllers\Api\Doctors\SectionController;
 use App\Http\Controllers\Api\Doctors\DiseasesController;
+use App\Http\Controllers\Api\Doctors\GalleryController;
 use App\Http\Controllers\Api\Doctors\PermissionController;
 
 // User Routes
@@ -55,4 +56,8 @@ Route::middleware('auth.doctor')->group(function () {
     // operations
     Route::apiResource('operations', OperationsController::class);
     Route::delete('operations', [OperationsController::class, 'deleteMany']);
+
+    //gallery
+    Route::apiResource('gallery', GalleryController::class);
+    Route::delete('gallery', [GalleryController::class, 'deleteMany']);
 });

@@ -6,7 +6,6 @@ use App\Models\Doctor;
 use App\Traits\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\DoctorResource;
@@ -23,7 +22,8 @@ class DoctorController extends Controller
         $this->middleware('permission:read_doctors,doctor')->only('index', 'show');
         $this->middleware('permission:create_doctors,doctor')->only('store');
         $this->middleware('permission:update_doctors,doctor')->only('update');
-        $this->middleware('permission:delete_doctors,doctor')->only('delete');
+        $this->middleware('permission:delete_doctors,doctor')->only('destroy');
+        $this->middleware('permission:delete_doctors,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse
@@ -101,9 +101,9 @@ class DoctorController extends Controller
 
         $doctor->delete();
 
-        if ($doctor->image) {
-            Storage::delete('public/doctors/' . $doctor->image);
-        }
+        // if ($doctor->image) {
+        //     Storage::delete('public/doctors/' . $doctor->image);
+        // }
 
         return $this->sendResponse(new DoctorResource($doctor), 'doctor deleted successfully');
     }

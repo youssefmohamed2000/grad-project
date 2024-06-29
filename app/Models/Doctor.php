@@ -25,6 +25,24 @@ class Doctor extends Authenticatable
         'image'
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function ($doctor) {
+            if ($doctor->image) {
+                Storage::disk('public')->delete('doctor/' . $doctor->image);
+            }
+        });
+    }
+
+    public function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => is_null($this->image) ? null : url(Storage::url('public/doctors/' . $this->image))
+        );
+    }
+
     // relations
     public function section(): BelongsTo
     {

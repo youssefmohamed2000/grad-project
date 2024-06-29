@@ -20,7 +20,8 @@ class DiagnosesController extends Controller
         $this->middleware('permission:read_diagnoses,doctor')->only('index', 'show');
         $this->middleware('permission:create_diagnoses,doctor')->only('store');
         $this->middleware('permission:update_diagnoses,doctor')->only('update');
-        $this->middleware('permission:delete_diagnoses,doctor')->only('delete');
+        $this->middleware('permission:delete_diagnoses,doctor')->only('destroy');
+        $this->middleware('permission:delete_diagnoses,doctor')->only('deleteMany');
     }
 
     /**

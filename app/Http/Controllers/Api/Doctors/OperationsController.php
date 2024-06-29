@@ -20,7 +20,8 @@ class OperationsController extends Controller
         $this->middleware('permission:read_operations,doctor')->only('index', 'show');
         $this->middleware('permission:create_operations,doctor')->only('store');
         $this->middleware('permission:update_operations,doctor')->only('update');
-        $this->middleware('permission:delete_operations,doctor')->only('delete');
+        $this->middleware('permission:delete_operations,doctor')->only('destroy');
+        $this->middleware('permission:delete_operations,doctor')->only('deleteMany');
     }
 
     /**

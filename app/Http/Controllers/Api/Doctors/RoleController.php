@@ -20,7 +20,8 @@ class RoleController extends Controller
         $this->middleware('permission:read_roles,doctor')->only('index');
         $this->middleware('permission:create_roles,doctor')->only('store');
         $this->middleware('permission:update_roles,doctor')->only('update');
-        $this->middleware('permission:delete_roles,doctor')->only('delete');
+        $this->middleware('permission:delete_roles,doctor')->only('destroy');
+        $this->middleware('permission:delete_roles,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse

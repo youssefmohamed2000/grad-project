@@ -21,7 +21,7 @@ class DoctorResource extends JsonResource
             'email' => $this->email,
             'section_id' => $this->section->id,
             'phone' => $this->phone,
-            'image' => url('storage/doctors/' . $this->image),
+            'image' => $this->image_url,
             'diagnoses' => $this->diagnoses,
             'created_at' => $this->created_at
         ];

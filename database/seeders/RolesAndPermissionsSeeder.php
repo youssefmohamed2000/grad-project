@@ -24,6 +24,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create_diagnoses', 'read_diagnoses', 'update_diagnoses', 'delete_diagnoses',
             'read_complains', 'create_complains', 'update_complains', 'delete_complains',
             'read_operations', 'create_operations', 'update_operations', 'delete_operations',
+            'read_gallery', 'create_gallery', 'update_gallery', 'delete_gallery',
         ];
 
         $permissions = collect($permissions)->map(function ($permission) {
