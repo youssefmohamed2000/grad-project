@@ -17,11 +17,11 @@ class GalleryController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_gallery,doctor')->only('index', 'show');
-        $this->middleware('permission:create_gallery,doctor')->only('store');
-        $this->middleware('permission:update_gallery,doctor')->only('update');
-        $this->middleware('permission:delete_gallery,doctor')->only('destroy');
-        $this->middleware('permission:delete_gallery,doctor')->only('deleteMany');
+        // $this->middleware('permission:read_galleries,doctor')->only('index', 'show');
+        $this->middleware('permission:create_galleries,doctor')->only('store');
+        $this->middleware('permission:update_galleries,doctor')->only('update');
+        $this->middleware('permission:delete_galleries,doctor')->only('destroy');
+        $this->middleware('permission:delete_galleries,doctor')->only('deleteMany');
     }
 
     public function index(): JsonResponse

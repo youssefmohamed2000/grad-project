@@ -23,6 +23,7 @@ class DoctorResource extends JsonResource
             'phone' => $this->phone,
             'image' => $this->image_url,
             'diagnoses' => $this->diagnoses,
+            'permissions' => $this->getAllPermissions()->pluck('name'),
             'created_at' => $this->created_at
         ];
     }

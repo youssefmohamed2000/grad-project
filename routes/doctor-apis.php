@@ -57,7 +57,8 @@ Route::middleware('auth.doctor')->group(function () {
     Route::apiResource('operations', OperationsController::class);
     Route::delete('operations', [OperationsController::class, 'deleteMany']);
 
-    //gallery
-    Route::apiResource('gallery', GalleryController::class);
-    Route::delete('gallery', [GalleryController::class, 'deleteMany']);
+    //galleries
+    Route::apiResource('galleries', GalleryController::class)->except(['update', 'index', 'show']);
+    Route::post('galleries/{id}', [GalleryController::class, 'update']);
+    Route::delete('galleries', [GalleryController::class, 'deleteMany']);
 });

@@ -51,7 +51,7 @@ class RoleController extends Controller
             'name' => $request->validated('name')
         ]);
 
-        $role->syncPermissions($request->validated('permissions'));
+        $role->syncPermissions($request->validated('permission_ids'));
 
         return $this->sendResponse(new RoleResource($role), 'role created successfully');
     }
@@ -68,7 +68,7 @@ class RoleController extends Controller
             'name' => $request->validated('name')
         ]);
 
-        $role->syncPermissions($request->validated('permissions'));
+        $role->syncPermissions($request->validated('permission_ids'));
 
         return $this->sendResponse(new RoleResource($role), 'role updated successfully');
     }

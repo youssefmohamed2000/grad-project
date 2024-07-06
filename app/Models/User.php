@@ -56,7 +56,7 @@ class User extends Authenticatable
     // relations
     public function details(): HasOne
     {
-        return $this->hasOne(userDetail::class, 'user_id', 'id');
+        return $this->hasOne(UserDetail::class, 'user_id', 'id');
     }
 
     public function family(): HasOne

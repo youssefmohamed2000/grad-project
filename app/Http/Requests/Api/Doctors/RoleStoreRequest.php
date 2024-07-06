@@ -23,7 +23,7 @@ class RoleStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:roles,name',
-            'permissions' => 'required|array',
+            'permission_ids' => 'required|array',
         ];
     }
 }
