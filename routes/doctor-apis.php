@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Doctors\AiController;
 use App\Http\Controllers\Api\Doctors\ComplainsController;
 use App\Http\Controllers\Api\Doctors\DiagnosesController;
 use App\Http\Controllers\Api\Doctors\OperationsController;
@@ -57,8 +58,11 @@ Route::middleware('auth.doctor')->group(function () {
     Route::apiResource('operations', OperationsController::class);
     Route::delete('operations', [OperationsController::class, 'deleteMany']);
 
-    //galleries
-    Route::apiResource('galleries', GalleryController::class)->except(['update', 'index', 'show']);
-    Route::post('galleries/{id}', [GalleryController::class, 'update']);
-    Route::delete('galleries', [GalleryController::class, 'deleteMany']);
+    //gallery
+    Route::apiResource('gallery', GalleryController::class);
+    Route::delete('gallery', [GalleryController::class, 'deleteMany']);
+
+    // AI
+    Route::post('ai', [AiController::class, 'result']);
 });
+
