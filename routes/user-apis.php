@@ -20,7 +20,7 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 
-Route::middleware('auth.doctor')->group(function () {
+Route::middleware('auth.doctor_or_user')->group(function () {
     // users
     Route::apiResource('users', UserController::class);
     Route::delete('users', [UserController::class, 'deleteMany']);

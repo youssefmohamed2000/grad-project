@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Api\Users\UserStoreRequest;
 use App\Http\Requests\Api\Users\UserUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -18,7 +19,8 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_users,doctor')->only('index', 'show');
+        // $this->middleware('permission:read_users,doctor')->only('index', 'show');
+        $this->middleware('permission:read_users,doctor')->only('index');
         $this->middleware('permission:create_users,doctor')->only('store');
         $this->middleware('permission:update_users,doctor')->only('update');
         $this->middleware('permission:delete_users,doctor')->only('destroy');
@@ -52,6 +54,15 @@ class UserController extends Controller
         if (!$user) {
             return $this->sendError('user not found');
         }
+
+        if (
+            (Auth::guard('user')->check() && $user->id != Auth::guard('user')->user()->id) ||
+            (Auth::guard('doctor')->check() && !Auth::guard('doctor')->user()->hasPermissionTo('read_users'))
+        ) {
+
+            return $this->sendError('Unauthorized', code: 403);
+        }
+
         return $this->sendResponse(new UserResource($user), 'user sent successfully');
     }
 
