@@ -17,11 +17,13 @@ class DiagnosesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_diagnoses,doctor')->only('index', 'show');
         $this->middleware('permission:create_diagnoses,doctor')->only('store');
         $this->middleware('permission:update_diagnoses,doctor')->only('update');
         $this->middleware('permission:delete_diagnoses,doctor')->only('destroy');
         $this->middleware('permission:delete_diagnoses,doctor')->only('deleteMany');
+        if (auth('doctor')->check()) {
+            $this->middleware('permission:read_diagnoses,doctor')->only('index', 'show');
+        }
     }
 
     /**
@@ -29,7 +31,12 @@ class DiagnosesController extends Controller
      */
     public function index(): JsonResponse
     {
-        $diagnoses = Diagnose::paginate();
+        if (auth('user')->check())
+            $diagnoses = Diagnose::whereIn('complain_id', function ($q) {
+                $q->select('id')->from('complains')->where('user_id', auth('user')->user()->id);
+            })->paginate();
+        else
+            $diagnoses = Diagnose::paginate();
 
         $paginationData = $this->getPaginationData($diagnoses);
 
@@ -61,11 +68,10 @@ class DiagnosesController extends Controller
     public function show(string $id): JsonResponse
     {
         $diagnose = Diagnose::find($id);
-
-        if (!$diagnose) {
+        if (!$diagnose)
             return $this->sendError('diagnose not found');
-        }
-
+        if (auth('user')->check())
+            $this->authorize('view', $diagnose);
         return $this->sendResponse(new DiagnoseResource($diagnose), 'diagnose sent successfully');
     }
 

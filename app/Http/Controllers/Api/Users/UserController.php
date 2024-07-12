@@ -18,16 +18,21 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_users,doctor')->only('index', 'show');
         $this->middleware('permission:create_users,doctor')->only('store');
         $this->middleware('permission:update_users,doctor')->only('update');
         $this->middleware('permission:delete_users,doctor')->only('destroy');
         $this->middleware('permission:delete_users,doctor')->only('deleteMany');
+        if (auth('doctor')->check()) {
+            $this->middleware('permission:read_users,doctor')->only('index', 'show');
+        }
     }
 
     public function index(): JsonResponse
     {
-        $users = User::paginate(15);
+        if (auth('user')->check())
+            $users = User::where('id', auth('user')->user()->id)->paginate(15);
+        else
+            $users = User::paginate(15);
 
         $paginationData = $this->getPaginationData($users);
 
@@ -48,10 +53,10 @@ class UserController extends Controller
     public function show(string $id): JsonResponse
     {
         $user = User::find($id);
-
-        if (!$user) {
+        if (!$user)
             return $this->sendError('user not found');
-        }
+        if (auth('user')->check())
+            $this->authorize('view', $user);
         return $this->sendResponse(new UserResource($user), 'user sent successfully');
     }
 

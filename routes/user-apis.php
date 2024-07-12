@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\Users\AuthController;
-use App\Http\Controllers\Api\Users\UserController;
 use App\Http\Controllers\Api\Users\UserDetailsController;
 use App\Http\Controllers\Api\Users\UserHistoryController;
 use Illuminate\Support\Facades\Route;
@@ -20,18 +19,14 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 
-Route::middleware('auth.doctor')->group(function () {
-    // users
-    Route::apiResource('users', UserController::class);
-    Route::delete('users', [UserController::class, 'deleteMany']);
+Route::middleware('auth.user')->group(function () {
+    // user details
+    Route::get('details', [UserDetailsController::class, 'index']);
+    Route::get('details/{user_id}', [UserDetailsController::class, 'show']);
+    Route::post('details', [UserDetailsController::class, 'storeOrUpdate']);
 
-    Route::group(['prefix' => 'users'], function () {
-        // user details
-        Route::get('details/{user_id}', [UserDetailsController::class, 'show']);
-        Route::post('details', [UserDetailsController::class, 'storeOrUpdate']);
-
-        // user family history
-        Route::get('history/{user_id}', [UserHistoryController::class, 'show']);
-        Route::post('history', [UserHistoryController::class, 'storeOrUpdate']);
-    });
+    // user family history
+    Route::get('history', [UserHistoryController::class, 'show']);
+    Route::get('history/{user_id}', [UserHistoryController::class, 'show']);
+    Route::post('history', [UserHistoryController::class, 'storeOrUpdate']);
 });

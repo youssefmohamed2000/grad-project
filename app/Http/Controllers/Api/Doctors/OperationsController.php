@@ -17,11 +17,13 @@ class OperationsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_operations,doctor')->only('index', 'show');
         $this->middleware('permission:create_operations,doctor')->only('store');
         $this->middleware('permission:update_operations,doctor')->only('update');
         $this->middleware('permission:delete_operations,doctor')->only('destroy');
         $this->middleware('permission:delete_operations,doctor')->only('deleteMany');
+        if (auth('doctor')->check()) {
+            $this->middleware('permission:read_operations,doctor')->only('index', 'show');
+        }
     }
 
     /**
@@ -29,7 +31,10 @@ class OperationsController extends Controller
      */
     public function index(): JsonResponse
     {
-        $operations = Operation::paginate();
+        if (auth('user')->check())
+            $operations = Operation::where('user_id', auth('user')->user()->id)->paginate();
+        else
+            $operations = Operation::paginate();
 
         $paginationData = $this->getPaginationData($operations);
 
@@ -61,11 +66,10 @@ class OperationsController extends Controller
     public function show(string $id): JsonResponse
     {
         $operation = Operation::find($id);
-
-        if (!$operation) {
+        if (!$operation)
             return $this->sendError('operation not found');
-        }
-
+        if (auth('user')->check())
+            $this->authorize('view', $operation);
         return $this->sendResponse(new OperationResource($operation), 'operation sent successfully');
     }
 

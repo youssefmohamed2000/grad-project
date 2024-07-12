@@ -17,11 +17,13 @@ class ComplainsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:read_complains,doctor')->only('index', 'show');
         $this->middleware('permission:create_complains,doctor')->only('store');
         $this->middleware('permission:update_complains,doctor')->only('update');
         $this->middleware('permission:delete_complains,doctor')->only('destroy');
         $this->middleware('permission:delete_complains,doctor')->only('deleteMany');
+        if (auth('doctor')->check()) {
+            $this->middleware('permission:read_complains,doctor')->only('index', 'show');
+        }
     }
 
     /**
@@ -29,7 +31,11 @@ class ComplainsController extends Controller
      */
     public function index(): JsonResponse
     {
-        $complains = Complain::paginate();
+        if (auth('user')->check())
+            $complains = Complain::where('user_id', auth('user')->user()->id)->paginate();
+        else
+            $complains = Complain::paginate();
+
         $paginationData = $this->getPaginationData($complains);
 
         return $this->sendResponse(
@@ -60,10 +66,10 @@ class ComplainsController extends Controller
     public function show(string $id): JsonResponse
     {
         $complain = Complain::find($id);
-
         if (!$complain)
             return $this->sendError('complain not found');
-
+        if (auth('user')->check())
+            $this->authorize('view', $complain);
         return $this->sendResponse(new ComplainResource($complain), 'complain sent successfully');
     }
 
