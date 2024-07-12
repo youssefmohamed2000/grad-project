@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\FamilyHistory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UserFamilyHistoryResource;
 use App\Http\Requests\Api\Users\UserHistoryRequest;
 
@@ -14,7 +15,7 @@ class UserHistoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:read_users,doctor')->only('show');
+        // $this->middleware('permission:read_users,doctor')->only('show');
         $this->middleware('permission:create_users,doctor')->only('storeOrUpdate');
         $this->middleware('permission:update_users,doctor')->only('storeOrUpdate');
     }
@@ -40,6 +41,14 @@ class UserHistoryController extends Controller
 
         if (!$user) {
             return $this->sendError('user not found');
+        }
+
+        if (
+            (Auth::guard('user')->check() && $user->id != Auth::guard('user')->user()->id) ||
+            (Auth::guard('doctor')->check() && !Auth::guard('doctor')->user()->hasPermissionTo('read_users'))
+        ) {
+
+            return $this->sendError('Unauthorized', code: 403);
         }
 
         $userFamilyHistory = $user->family;
