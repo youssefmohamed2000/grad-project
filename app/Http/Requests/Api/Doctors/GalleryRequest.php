@@ -30,3 +30,4 @@ class GalleryRequest extends FormRequest
         ],
     ];
 }
+}
